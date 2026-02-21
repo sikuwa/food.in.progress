@@ -495,30 +495,38 @@ body.scrolled .dot-nav { opacity: 1; }
     .fixed-bg-container, .bg-layer { will-change: transform, opacity; backface-visibility: hidden; }
 }
 /* ================================================== */
-/* MOBILE: REMOVE LEFT PANEL */
+/* MOBILE: REMOVE SPLIT ANIMATION COMPLETELY */
 /* ================================================== */
 
 @media (max-width: 992px) {
 
+    /* Popolnoma odstranimo left panel */
     #left-panel {
         display: none !important;
     }
 
+    /* Right panel zavzame full screen brez animacij */
     #right-panel {
         position: relative;
-        right: 0;
-        width: 100vw;
+        right: 0 !important;
+        width: 100vw !important;
         height: 100vh;
+        transition: none !important;
     }
 
-    /* Preprečimo vpliv scrolled klase */
-    body.scrolled #left-panel {
-        display: none !important;
-        width: 0;
+    /* Onemogočimo vse split tranzicije */
+    #left-panel,
+    #right-panel {
+        transition: none !important;
     }
 
+    /* body.scrolled nima več vizualnega efekta */
     body.scrolled #right-panel {
         right: 0;
         width: 100vw;
+    }
+
+    body.scrolled #left-panel {
+        display: none !important;
     }
 }
