@@ -303,6 +303,67 @@ body.scrolled .mouse { opacity: 0; visibility: hidden; }
     text-transform: uppercase;
 }
 
+/* Razporeditev v overlayu */
+.overlay-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+
+
+
+
+.overlay-content {
+    z-index: 10001; /* Vsebina mora biti nad ozadjem overlay-a */
+    position: relative;
+    
+    
+}
+
+.social-links {
+    margin-top: 40px;
+    display: flex;
+    gap: 40px;
+    opacity: 1;
+    transform: translateY(20px);
+    transition: all 0.6s cubic-bezier(0.77, 0, 0.175, 1) 0.5s; /* Dodan delay */
+    
+}
+
+
+
+.social-icon {
+    color: var(--cream) !important; /* Prisilimo belo barvo */
+    font-size: 2.5rem;
+    pointer-events: auto; /* Omogočimo klike */
+    z-index: 10002;
+}
+
+/* Popravek za stabilnost slik */
+.bg-layer {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transform: scale(1.1);
+    transition: opacity 1s ease, transform 1.2s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.bg-layer.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Zrnatost ne sme blokirati klikov */
+.grain {
+    pointer-events: none;
+    z-index: 99999;
+}
+
 /* ================================================== */
 /* 11. DOT NAVIGATION */
 /* ================================================== */
@@ -416,43 +477,11 @@ body.scrolled .dot-nav { opacity: 1; }
     font-family: 'LetterGothic', sans-serif;
     font-style: italic;
     font-size: 18px;
+    color: black;
+}
+
+.geschichte-section h1 {
+        color: black;
 }
 
 /************************************************************************************************************/
-
-/* ================================================== */
-/* MOBILE: REMOVE SPLIT ANIMATION COMPLETELY */
-/* ================================================== */
-
-@media (max-width: 992px) {
-
-    /* Popolnoma odstranimo left panel */
-    #left-panel {
-        display: none !important;
-    }
-
-    /* Right panel zavzame full screen brez animacij */
-    #right-panel {
-        position: relative;
-        right: 0 !important;
-        width: 100vw !important;
-        height: 100vh;
-        transition: none !important;
-    }
-
-    /* Onemogočimo vse split tranzicije */
-    #left-panel,
-    #right-panel {
-        transition: none !important;
-    }
-
-    /* body.scrolled nima več vizualnega efekta */
-    body.scrolled #right-panel {
-        right: 0;
-        width: 100vw;
-    }
-
-    body.scrolled #left-panel {
-        display: none !important;
-    }
-}
