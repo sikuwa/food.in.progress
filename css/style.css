@@ -516,124 +516,148 @@ body.scrolled .dot-nav { opacity: 1; }
 /************************************************************************************************************/
 
 /* ================================================== */
-/* MOBILE CLEANUP (pod 991px) */
+/* KONČNI MOBILE CLEANUP (pod 991px) */
 /* ================================================== */
 @media (max-width: 991px) {
     
-    /* 1. STABILIZACIJA OSNOVE */
+    /* 1. STABILIZACIJA: Prepreči horizontalni scroll in omogoči vertikalnega */
     html, body {
-        overflow-x: hidden; /* Popolna blokada horizontalnega premikanja */
+        overflow-x: hidden !important;
+        overflow-y: auto !important;
         width: 100%;
         position: relative;
-        height: auto;
+        height: auto; /* Pomembno za normalen scroll */
     }
 
-    /* Skrijemo vse desktop specifične elemente */
-    .intro-mode .left-panel, 
-    .dots-nav, 
-    .bg-layers {
+    /* 2. SKRIVANJE ELEMENTOV */
+    #left-panel, 
+    .dot-nav, 
+    .bg-layers, 
+    .mouse {
         display: none !important;
     }
 
-    /* 2. VSTOPNI HERO (Logo stran) */
-    .intro-mode::before {
+    /* 3. VSTOPNA STRAN (HERO) */
+    /* Uporabimo body.intro-mode::before za fiksno rdeče ozadje z logotipom */
+    body.intro-mode::before {
         content: "";
         display: block;
+        width: 100%;
         height: 100vh;
         background-color: var(--red);
-        /* Prilagoditev logotipa: contain + 20% margin znotraj ozadja */
-        background-image: url('../image/logo.svg'); 
+        background-image: url('../image/logo.svg'); /* Preveri pot do logotipa */
         background-repeat: no-repeat;
         background-position: center;
-        background-size: 70% auto; /* Logotip zavzame 70% širine, kar ustvari varen rob */
+        background-size: 80% auto; /* Logo je cel viden z varnostnim robom */
+        position: relative;
+        z-index: 10;
     }
 
-    .intro-mode .right-panel {
-        width: 100% !important;
-        left: 0 !important;
+    /* Prilagoditev desnega panela, da se zloži pod hero stran */
+    #right-panel {
         position: relative !important;
+        width: 100% !important;
+        right: 0 !important;
         height: auto !important;
         display: block !important;
+        z-index: 20;
+        background-color: var(--cream);
     }
 
-    /* 3. STRUKTURA SEKCIJ */
+    /* 4. SEKCIJE IN SLIKE OZADIJ */
     .sections-container {
         display: block !important;
-        transform: none !important; /* Onemogoči JS skakanje */
+        transform: none !important; /* Onemogoči JS premikanje */
         width: 100%;
     }
 
     .v-section {
         height: auto !important;
-        min-height: 100vh; /* Vsaka sekcija vsaj čez cel zaslon */
-        padding: 100px 30px; /* Več prostora zgoraj/spodaj za scroll */
-        opacity: 1 !important;
-        visibility: visible !important;
+        min-height: 100vh;
+        padding: 80px 25px;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        box-sizing: border-box;
+        align-items: center;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        background-color: var(--cream);
+        z-index: 1;
     }
 
-    /* 4. OVERLAY NAVIGACIJA PRILAGODITEV */
+    /* DODAJANJE SLIK OZADIJ V SEKCIJE */
+    /* Vsaki sekciji dodamo pseudo element za sliko, ki se prilagodi zaslonu */
+    .v-section::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.15; /* Prilagodi prosojnost, da je tekst berljiv */
+        z-index: -1;
+    }
+
+    /* Specifične slike za tvoje sekcije (Popravi poti do slik!) */
+    .hausgemacht-section::after { background-image: url('../image/slika1.jpg'); }
+    .naturlich-section::after { background-image: url('../image/slika2.jpg'); }
+    .oma-section::after { background-image: url('../image/slika3.jpg'); }
+    .geschichte-section::after { background-image: url('../image/slika4.jpg'); }
+
+    /* 5. OVERLAY NAVIGACIJA */
     .overlay {
-        /* Prepreči, da bi dolg meni postal nedostopen */
-        overflow-y: auto; 
+        width: 0; /* JS kontrolira širino ob kliku na hamburger */
+        overflow-y: auto;
+        background-color: var(--red);
     }
 
     .overlay-content {
-        width: 100%;
-        padding: 40px 20px;
+        padding: 60px 20px;
         position: relative;
-        top: 50%;
-        transform: translateY(-50%); /* Centriranje menija */
-    }
-
-    .nav-links {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .nav-links a {
-        font-size: 1.5rem !important; /* Optimalna velikost za mobitel */
-        margin: 12px 0;
-        text-align: center;
+        top: 0;
+        transform: none; /* Resetiramo desktop centriranje */
         width: 100%;
     }
 
-    /* 5. HAMBURGER IKONA (Nav-icon) */
+    .overlay-content a {
+        font-size: 2rem !important; /* Prilagojena velikost za mobilni zaslon */
+        margin: 15px 0;
+        text-align: center;
+    }
+
+    /* 6. HAMBURGER IKONA */
     #nav-icon {
         top: 25px;
         right: 25px;
-        z-index: 1001; /* Vedno nad vsem */
     }
 
-    /* Če je ikona na rdeči podlagi, jo naredimo belo (opcijsko, odvisno od dizajna) */
     #nav-icon span {
-        background: var(--cream) !important; 
+        background: var(--red); /* Privzeto rdeča na kremi */
     }
 
-    /* 6. SOCIALNE IKONE */
-    .social-links {
-        margin-top: 40px;
-        justify-content: center;
-        gap: 30px;
+    /* Ko je ikona na vrhu vstopne strani (rdeča podlaga), naj bo bela */
+    body.intro-mode #nav-icon:not(.open) span {
+        background: var(--cream) !important;
     }
 
-    .social-icon {
-        font-size: 1.8rem;
-    }
-
-    /* 7. PRILAGODITEV BESEDILA */
+    /* 7. BESEDILO */
     .inner-content h1 {
-        font-size: 1.8rem !important;
-        line-height: 1.2;
-        margin-bottom: 20px;
+        font-size: 2rem !important;
+        line-height: 1.1;
     }
 
     .inner-content p {
-        font-size: 1rem !important;
-        line-height: 1.5;
+        font-size: 1.1rem !important;
+        line-height: 1.4;
+    }
+
+    .btn-premium {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 12px 30px;
+        font-size: 0.9rem;
     }
 }
