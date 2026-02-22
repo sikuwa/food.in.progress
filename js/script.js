@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. MEHKI VHOD
     setTimeout(() => body.classList.add('page-loaded'), 100);
 
-    // 2. GLAVNA FUNKCIJA ZA POSODABLJANJE (Samo Desktop)
+    // 2. POSODABLJANJE SEKCIJ (Desktop)
     function update(idx) {
         if (window.innerWidth <= 991 || moving) return;
         if (idx < 0 || idx >= dots.length) return;
@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
         current = idx;
 
         if (container) {
-            container.style.transform = `translateY(-${idx * 100}vh)`;
+            container.style.transform = `translate3d(0, -${idx * 100}vh, 0)`;
         }
         
         dots.forEach(d => d.classList.remove('active'));
@@ -42,13 +42,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 800);
     }
 
-    // 3. MOBILNI TOUCH/SNAP LOGIKA (Tvoj predlog - Popravljen)
+    // 3. MOBILNI SNAP & TOUCH (Brez zatikanja)
     if (window.innerWidth <= 991) {
         container.addEventListener('touchstart', e => {
             startY = e.touches[0].clientY;
             isDragging = true;
-            // Onemogočimo tranzicijo za takojšen odziv na prst
-            container.style.transition = "none";
+            container.style.transition = "none"; 
         }, { passive: true });
 
         container.addEventListener('touchmove', e => {
@@ -57,15 +56,16 @@ document.addEventListener("DOMContentLoaded", () => {
             let currentY = e.touches[0].clientY;
             let diff = currentY - startY;
 
-            // Če smo na vrhu in vlečemo dol (intro), pustimo naravno
+            // Če smo na vrhu in vlečemo dol, ne blokiramo intro logotipa
             if (!body.classList.contains('scrolled') && diff > 0) return;
 
-            // Preprečimo brskalniku, da bi sam skrolal, da se ne zatika
+            // Ključno: Preprečimo tresenje brskalnika
             if (e.cancelable) e.preventDefault();
 
             let moveY = -current * 100 + (diff / window.innerHeight * 100);
-            container.style.transform = `translateY(${moveY}vh)`;
-        }, { passive: false }); // Passive: false je nujen za preventDefault
+            // Translate3d uporabi GPU za gladko drsenje slik
+            container.style.transform = `translate3d(0, ${moveY}vh, 0)`;
+        }, { passive: false });
 
         container.addEventListener('touchend', e => {
             if (!isDragging) return;
@@ -74,19 +74,16 @@ document.addEventListener("DOMContentLoaded", () => {
             let endY = e.changedTouches[0].clientY;
             let diff = endY - startY;
 
-            // Vrnemo gladko tranzicijo za "snap"
             container.style.transition = "transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)";
 
-            if (Math.abs(diff) > 70) { // Prag za premik
+            if (Math.abs(diff) > 60) {
                 if (diff < 0 && current < sections.length - 1) {
-                    // Dol -> Naslednja
                     if (!body.classList.contains('scrolled')) {
                         body.classList.add('scrolled');
                     } else {
                         current++;
                     }
                 } else if (diff > 0) {
-                    // Gor -> Prejšnja
                     if (current === 0) {
                         body.classList.remove('scrolled');
                     } else {
@@ -94,77 +91,36 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
                 }
             }
-            
-            container.style.transform = `translateY(-${current * 100}vh)`;
+            container.style.transform = `translate3d(0, -${current * 100}vh, 0)`;
         });
     }
 
-    // 4. DESKTOP SCROLL (Wheel)
-    const handleWheel = (e) => {
+    // 4. DESKTOP DOGODKI (Wheel & Dots)
+    window.addEventListener('wheel', (e) => {
         if (window.innerWidth <= 991 || moving) return;
-
         if (!body.classList.contains('scrolled')) {
-            if (e.deltaY > 0) {
-                body.classList.add('scrolled');
-                update(0); 
-            }
+            if (e.deltaY > 0) { body.classList.add('scrolled'); update(0); }
         } else {
-            if (e.deltaY > 0) {
-                if (current < dots.length - 1) update(current + 1);
-            } else if (e.deltaY < 0) {
-                if (current === 0) {
-                    body.classList.remove('scrolled');
-                } else {
-                    update(current - 1);
-                }
-            }
+            if (e.deltaY > 0) { if (current < dots.length - 1) update(current + 1); }
+            else if (e.deltaY < 0) { if (current === 0) body.classList.remove('scrolled'); else update(current - 1); }
         }
-    };
-    window.addEventListener('wheel', handleWheel, { passive: true });
+    }, { passive: true });
 
-    // 5. KLIK NA PIKE (Desktop)
     dots.forEach(dot => {
         dot.addEventListener('click', () => {
             if (window.innerWidth <= 991) return;
             const target = parseInt(dot.getAttribute('data-index'));
-            if (!body.classList.contains('scrolled')) {
-                body.classList.add('scrolled');
-            }
+            if (!body.classList.contains('scrolled')) body.classList.add('scrolled');
             update(target);
         });
     });
 
-    // 6. HAMBURGER & OVERLAY
+    // 5. NAVIGACIJA (Hamburger)
     if (navIcon && overlay) {
         navIcon.addEventListener('click', () => {
             navIcon.classList.toggle('open');
             overlay.style.width = navIcon.classList.contains('open') ? "100%" : "0";
-            
-            if (window.innerWidth <= 991) {
-                body.style.overflow = navIcon.classList.contains('open') ? "hidden" : "auto";
-            }
+            if (window.innerWidth <= 991) body.style.overflow = "hidden";
         });
     }
-
-    // 7. MEHKI ODHOD
-    document.querySelectorAll('.nav-links a, .btn-premium').forEach(link => {
-        link.addEventListener('click', (e) => {
-            const href = link.getAttribute('href');
-            if (href && href.includes('.html')) {
-                e.preventDefault();
-                body.classList.add('page-exit');
-                setTimeout(() => window.location.href = href, 800);
-            }
-        });
-    });
-
-    // 8. RESET OB RESIZE
-    window.addEventListener('resize', () => {
-        if (window.innerWidth <= 991) {
-            container.style.transform = body.classList.contains('scrolled') ? `translateY(-${current * 100}vh)` : "none";
-        } else {
-            container.style.transform = `translateY(-${current * 100}vh)`;
-            body.style.overflow = "hidden";
-        }
-    });
 });
