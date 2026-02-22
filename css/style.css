@@ -513,6 +513,7 @@ body.scrolled .dot-nav { opacity: 1; }
         color: black;
 }
 
+
 /* ================================================== */
 /* KONČNI MOBILE FIX (pod 991px) */
 /* ================================================== */
@@ -524,6 +525,10 @@ body.scrolled .dot-nav { opacity: 1; }
         height: auto !important;
         width: 100%;
         position: relative;
+
+        touch-action: pan-y !important; 
+        -webkit-overflow-scrolling: touch; /* Gladko drsenje za iPhone */
+        
     }
 
     /* Onemogoči Bootstrapov vh-100 in overflow-hidden na mobilcu */
@@ -550,6 +555,7 @@ body.scrolled .dot-nav { opacity: 1; }
         background-size: 70% auto;
         position: relative;
         z-index: 5;
+        pointer-events: none; /* Scroll bo šel "skozi" logo direktno na vsebino */
     }
 
     /* 4. STRUKTURA ZA SCROLL */
@@ -579,6 +585,7 @@ body.scrolled .dot-nav { opacity: 1; }
         display: flex;
         flex-direction: column;
         justify-content: center;
+        z-index: 10; /*???*/
     }
 
     /* Ozadja sekcij */
@@ -603,7 +610,7 @@ body.scrolled .dot-nav { opacity: 1; }
         background: var(--red) !important;
     }
 
-    /* Bela SAMO ko je meni odprt */
+    /* Bela SAMO ko je meni odprt */ /* Ko je meni odprt, postane bela (na rdečem ozadju menija) */
     #nav-icon.open span {
         background: var(--cream) !important;
     }
