@@ -514,138 +514,98 @@ body.scrolled .dot-nav { opacity: 1; }
 }
 
 /************************************************************************************************************/
-
-/* ================================================== */
-/* KONČNI MOBILE CLEANUP (pod 991px) */
-/* ================================================== */
 @media (max-width: 991px) {
-    
-    /* 1. STABILIZACIJA: Omogoči naraven scroll po celotni dolžini */
+    /* 1. ODKLEPANJE SCROLLA */
     html, body {
         overflow-x: hidden !important;
-        overflow-y: auto !important; /* Ključno za scroll */
+        overflow-y: visible !important; /* Dovolimo vsebini, da diktira dolžino */
+        height: auto !important;
         width: 100%;
         position: relative;
-        height: auto !important; 
     }
 
-    /* 2. SKRIVANJE DESKTOP ELEMENTOV */
-    #left-panel, 
-    .dot-nav, 
-    .bg-layers, 
-    .mouse {
+    /* 2. SKRIVANJE DESKTOP NAVAKE */
+    #left-panel, .dot-nav, .bg-layers, .mouse {
         display: none !important;
     }
 
     /* 3. VSTOPNA STRAN (HERO) */
-    /* Postavimo jo kot fiksno višino na vrhu */
+    /* Ker je logo rdeč na kremi, tu NI več rdečega ozadja */
     body.intro-mode::before {
         content: "";
         display: block;
         width: 100%;
         height: 100vh;
-        background-color: var(--red);
+        background-color: var(--cream);
         background-image: url('../image/logo.svg');
         background-repeat: no-repeat;
         background-position: center;
-        background-size: 75% auto; /* Logo centriran in viden */
+        background-size: 70% auto;
         position: relative;
-        z-index: 10;
+        z-index: 5;
     }
 
-    /* Desni panel spremenimo v normalen block pod hero stranjo */
+    /* 4. STRUKTURA ZA SCROLL */
     #right-panel {
         position: relative !important;
         width: 100% !important;
+        top: 0 !important;
         right: 0 !important;
-        height: auto !important;
         display: block !important;
-        z-index: 20;
+        height: auto !important;
+        z-index: 10;
         background-color: var(--cream);
     }
 
-    /* 4. SEKCIJE IN SLIKE OZADIJ */
     .sections-container {
         display: block !important;
-        transform: none !important; /* Onemogoči JS premikanje */
+        transform: none !important;
         height: auto !important;
     }
 
     .v-section {
         height: auto !important;
         min-height: 100vh;
-        padding: 100px 25px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
+        padding: 80px 25px;
         position: relative;
-        z-index: 1;
-        background-color: transparent !important; /* Da se vidi ::after slika */
+        background-color: transparent !important;
     }
 
-    /* DODAJANJE SLIK OZADIJ V SEKCIJE */
+    /* Slike ozadij v sekcijah */
     .v-section::after {
         content: "";
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        inset: 0;
         background-size: cover;
         background-position: center;
-        opacity: 0.2; /* Prilagodi prosojnost po želji */
+        opacity: 0.3; /* Malo močneje, da se vidijo */
         z-index: -1;
     }
 
-    /* Specifične slike za sekcije */
     .hausgemacht-section::after { background-image: url('../image/slika1.jpg'); }
     .naturlich-section::after { background-image: url('../image/img2.jpg'); }
     .oma-section::after { background-image: url('../image/slika3.jpg'); }
     .geschichte-section::after { background-image: url('../image/bevk.png'); }
 
-    /* 5. OVERLAY NAVIGACIJA */
+    /* 5. BARVA HAMBURGER IKONE */
+    /* Osnovno stanje: Rdeča (ker je vstopna stran krem barve) */
+    #nav-icon span {
+        background: var(--red) !important;
+    }
+
+    /* Ko odpreš overlay ali ko podrsaš dol v sekcije s slikami, postane bela */
+    #nav-icon.open span,
+    body.scrolled #nav-icon span {
+        background: var(--cream) !important;
+    }
+
+    /* 6. OVERLAY NAVIGACIJA */
     .overlay {
-        overflow-y: auto;
         background-color: var(--red);
     }
 
-    .overlay-content {
-        padding: 80px 20px;
-        position: relative;
-        top: 0;
-        transform: none;
-        width: 100%;
-        height: auto;
-    }
-
     .overlay-content a {
-        font-size: 1.8rem !important; 
-        margin: 10px 0;
-    }
-
-    /* 6. HAMBURGER IKONA */
-    #nav-icon {
-        top: 25px;
-        right: 25px;
-    }
-
-    #nav-icon span {
-        background: var(--red) !important; /* Rdeča na kremi */
-    }
-
-    /* ikona  vstopne strani */
-    body.intro-mode #nav-icon:not(.open) span {
-        background: var(--red) !important;
-    }
-    
-    #nav-icon.open span {
-        background: var(--cream) !important; /* Vedno bela ko je meni odprt */
-    }
-
-    /* 7. PRILAGODITEV BESEDILA */
-    .inner-content h1 {
         font-size: 1.8rem !important;
+        color: var(--cream) !important;
     }
 }
