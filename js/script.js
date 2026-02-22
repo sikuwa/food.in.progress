@@ -39,9 +39,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 800);
     }
 
-    // 3. DESKTOP SCROLL (Wheel)
-    window.addEventListener('wheel', (e) => {
+ // 3. DESKTOP SCROLL (Wheel) - Popravljeno, da ne ovira mobilnega scrolla
+    const handleWheel = (e) => {
+        // Če je okno ožje od 991px, popolnoma ignoriraj to funkcijo
         if (window.innerWidth <= 991) return; 
+        
         if (moving) return;
 
         if (!body.classList.contains('scrolled')) {
@@ -60,7 +62,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
         }
-    }, { passive: true });
+    };
+
+    // Dodamo event listener z { passive: true }, kar drastično izboljša scroll performance
+    window.addEventListener('wheel', handleWheel, { passive: true });
 
     // 4. KLIK NA PIKE (Radio gumbi) - Desktop
     dots.forEach(dot => {
