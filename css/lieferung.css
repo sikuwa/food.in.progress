@@ -1,0 +1,329 @@
+/* --- HAMBURGER FIX --- 
+#nav-icon span {
+    background: var(--red) !important;
+}*/
+
+/* --- LAYOUT --- */
+.lieferung-page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: var(--cream);
+}
+
+.fixed-top-section {
+    flex-shrink: 0;
+    z-index: 1001;
+}
+
+.scroll-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 0; /* Da gre footer čisto do dna */
+}
+
+/* --- BANNER --- */
+.red-banner {
+    background-color: var(--svsiva);
+    color: var(--red);
+    padding: 30px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.banner-inner { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 15px;
+}
+
+.mini-logo { 
+    height: 150px; 
+    width: auto;
+}
+
+.red-banner h1 { 
+    font-family: 'TTHoves', sans-serif;
+    font-weight: bold;
+    font-size: 3.5rem; 
+    margin: 0; 
+    text-align: center;
+}
+
+.intro-bar { 
+    text-align: center; 
+    padding: 20px; 
+    border-bottom: 1px solid var(--svsiva); 
+    background: var(--cream); 
+}
+
+.intro-bar p {
+    font-family: 'LetterGothic', sans-serif;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.intro-bar span {
+    font-family: 'LetterGothic', sans-serif;
+    font-style: italic;
+    font-weight: normal;
+
+}
+
+
+
+.btn-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--red);
+    color: white !important;
+    padding: 12px 25px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: bold;
+}
+.btn-whatsapp i { 
+    font-size: 1.3rem; 
+}
+
+.btn-whatsapp:hover { 
+    transform: scale(1.05); 
+}
+
+
+/* --- KARTICE (Krog -> Pravokotnik) --- */
+.card-wrapper {
+    margin: 30px;
+    opacity: 0; 
+    transform: translateX(-100px);
+}
+
+.expand-card {
+    width: 380px;  
+    height: 380px; 
+    max-height: 380px; /* Ključno za animacijo */
+    border-radius: 50%;
+    background: white;
+    border: 1px solid var(--svsiva);
+    overflow: hidden;
+    transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1), border-radius 0.6s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+/* HOVER STANJE */
+.expand-card:hover {
+    width: 450px; 
+    height: auto;
+    max-height: 1200px; /* Nastavi dovolj visoko vrednost, da zajame ves tekst */
+    border-radius: 30px;
+    padding-bottom: 30px;
+}
+
+/* --- SLIKE V KARTICI --- */
+.circle-box {
+    width: 380px;
+    height: 380px;
+    flex-shrink: 0;
+    position: relative;
+    transition: all 0.6s ease;
+    overflow: hidden;
+    border-radius: 50%; /* Da ostane slika krog, dokler se ne raztegne */
+}
+
+.expand-card:hover .circle-box {
+    width: 100%;
+    height: 250px;
+    border-radius: 0; /* Na hoverju postane pravokotna slika */
+}
+
+.circle-box img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.6s ease-in-out;
+}
+
+.img-base {
+    opacity: 1;
+    z-index: 1;
+}
+
+.img-hover {
+    opacity: 0;
+    z-index: 2;
+}
+
+/* HOVER LOGIKA: Zamenjava slik */
+.expand-card:hover .img-base {
+    opacity: 0;
+}
+
+.expand-card:hover .img-hover {
+    opacity: 1;
+}
+
+/* --- TEKSTOVNI DEL --- */
+.card-text {
+    padding: 25px;
+    width: 100%;
+    opacity: 0;
+    visibility: hidden;
+    /* Dodamo rahel delay na opacity, da se kartica prej razširi */
+    transition: opacity 0.5s ease 0.3s, visibility 0.5s; 
+    display: flex;
+    flex-direction: column;
+}
+
+.expand-card:hover .card-text {
+    opacity: 1;
+    visibility: visible;
+}
+
+.card-text h5 {
+    font-family: 'TTHoves', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    color: var(--red);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* MREŽA ZA DVA STOLPCA SESTAVIN */
+.ingredients-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+}
+
+.ingredient-section {
+    
+
+    display: flex;
+    flex-direction: row;
+    /* align-items: flex-start zagotovi, da se oba elementa začneta na vrhu align-items: stretch; = Da h4 raztegne črto do dna*/
+    align-items: flex-start; 
+    gap: 12px;
+    margin-bottom: 5px;
+}
+
+/*.card-text h4 {
+    font-family: 'LetterGothic', sans-serif;
+    font-size: 11px;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    color: var(--red);
+    margin: 0;
+    white-space: nowrap;
+    border-right: 1px solid var(--svsiva);
+    padding-right: 5px;
+    text-decoration: underline;
+}*/
+
+/* VERTIKALNI NASLOV (h4) */
+.card-text h4 {
+    font-family: 'LetterGothic', sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--red);
+    margin: 0;
+    
+    /* Vertikalni izpis */
+    writing-mode: vertical-rl;
+    /* Rotate(180deg) poskrbi, da se besedilo bere od spodaj navzgor, 
+       vendar ga flex-start drži fiksiranega na vrh stolpca */
+    transform: rotate(180deg); 
+    
+    white-space: nowrap;
+    border-right: 1px solid var(--svsiva);
+    padding-right: 5px;
+    
+    /* Zagotovimo, da nima odvečnih odmikov, ki bi ga potiskali navzdol */
+    line-height: 1; 
+    text-decoration: underline;
+}
+
+/* DESNI TEKST (p) */
+.card-text p {
+    font-family: 'LetterGothic', sans-serif;
+    font-size: 12px;
+    margin: 0;
+    /* Nastavi enak line-height kot pri h4 za popolno linijo */
+    line-height: 1.4; 
+    flex: 1;
+}
+
+/*.card-text p {
+    font-family: 'LetterGothic', sans-serif;
+    font-size: 12px;
+    margin: 0;
+    line-height: 1.4;
+    color: #333;
+}*/
+
+/* --- NAVODILA --- */
+.instructions-area {
+    padding: 60px 0;
+    background: var(--cream);
+}
+
+.instructions-box {
+    background: white;
+    padding: 40px;
+    border-radius: 30px;
+    border-left: 10px solid var(--red);
+    max-width: 900px;
+   /* margin: 0 auto;*/
+     box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.instructions-box h2{
+    font-family: 'LetterGothic', sans-serif;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.step {
+    text-align: left;
+    padding: 20px;
+    font-family: 'LetterGothic', sans-serif;
+    font-style: normal;
+    font-weight: normal;
+}
+
+.step span {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    background: var(--red);
+    color: white;
+    border-radius: 50%;
+    line-height: 40px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+    font-family: 'TTHoves', sans-serif;
+    font-weight: bold;
+
+}
+
+/* --- FOOTER --- */
+.footer-simple {
+    background: var(--svsiva);
+    padding: 40px 0;
+    text-align: center;
+    width: 100%;
+}
