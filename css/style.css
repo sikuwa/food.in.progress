@@ -573,7 +573,7 @@ body.scrolled .dot-nav { opacity: 1; }
     .v-section {
         height: auto !important;
         min-height: 100vh;
-        padding: 80px 35px;
+        padding: 80px 40px;
         position: relative;
         background-color: var(--cream); !important;
         display: flex;
