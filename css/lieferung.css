@@ -63,6 +63,9 @@
 
 .intro-bar p {
     font-family: 'LetterGothic', sans-serif;
+    font-weight: normal;
+    font-style: normal;
+
     font-size: 18px;
     margin-bottom: 10px;
 }
@@ -259,7 +262,10 @@
 /* DESNI TEKST (p) */
 .card-text p {
     font-family: 'LetterGothic', sans-serif;
-    font-size: 12px;
+    font-weight: normal;
+    font-style: normal;
+
+    font-size: 11px;
     margin: 0;
     /* Nastavi enak line-height kot pri h4 za popolno linijo */
     line-height: 1.4; 
