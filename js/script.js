@@ -12,14 +12,17 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. MEHKI VHOD
     setTimeout(() => body.classList.add('page-loaded'), 100);
 
-    // 2. FUNKCIJA ZA POSODABLJANJE (Samo Desktop)
+    // 2. GLAVNA FUNKCIJA ZA POSODABLJANJE SEKCIJ (Samo Desktop)
     function update(idx) {
         if (window.innerWidth <= 991 || moving) return;
         if (idx < 0 || idx >= dots.length) return;
         
         moving = true;
         current = idx;
-        if (container) container.style.transform = `translateY(-${idx * 100}vh)`;
+
+        if (container) {
+            container.style.transform = `translateY(-${idx * 100}vh)`;
+        }
         
         dots.forEach(d => d.classList.remove('active'));
         if (dots[idx]) dots[idx].classList.add('active');
@@ -29,13 +32,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         document.querySelectorAll('.btn-premium').forEach(b => b.classList.remove('visible'));
         const activeBtn = document.querySelectorAll('.v-section')[idx]?.querySelector('.btn-premium');
+        
         setTimeout(() => {
             if (activeBtn) activeBtn.classList.add('visible');
             moving = false;
         }, 800);
     }
 
-    // 3. SCROLL LOGIKA
+    // 3. DESKTOP SCROLL (Wheel)
     window.addEventListener('wheel', (e) => {
         if (window.innerWidth <= 991) return; 
         if (moving) return;
@@ -49,32 +53,41 @@ document.addEventListener("DOMContentLoaded", () => {
             if (e.deltaY > 0) {
                 if (current < dots.length - 1) update(current + 1);
             } else if (e.deltaY < 0) {
-                if (current === 0) body.classList.remove('scrolled');
-                else update(current - 1);
+                if (current === 0) {
+                    body.classList.remove('scrolled');
+                } else {
+                    update(current - 1);
+                }
             }
         }
     }, { passive: true });
 
-    // POSEBEN FIX ZA MOBILNI SCROLL (Detekcija odmika od vrha)
-    window.addEventListener('scroll', () => {
-        if (window.innerWidth <= 991) {
-            if (window.scrollY > 50) {
+    // 4. KLIK NA PIKE (Radio gumbi) - Desktop
+    dots.forEach(dot => {
+        dot.addEventListener('click', () => {
+            if (window.innerWidth <= 991) return;
+            const target = parseInt(dot.getAttribute('data-index'));
+            if (!body.classList.contains('scrolled')) {
                 body.classList.add('scrolled');
-            } else {
-                body.classList.remove('scrolled');
             }
-        }
+            update(target);
+        });
     });
 
-    // 4. HAMBURGER & OVERLAY
+    // 5. HAMBURGER & OVERLAY
     if (navIcon && overlay) {
         navIcon.addEventListener('click', () => {
             navIcon.classList.toggle('open');
             overlay.style.width = navIcon.classList.contains('open') ? "100%" : "0";
+            
+            // Ko je meni odprt, prepreči scrollanje ozadja na mobilcu
+            if (window.innerWidth <= 991) {
+                body.style.overflow = navIcon.classList.contains('open') ? "hidden" : "auto";
+            }
         });
     }
 
-    // 5. MEHKI ODHOD
+    // 6. MEHKI ODHOD
     document.querySelectorAll('.nav-links a, .btn-premium').forEach(link => {
         link.addEventListener('click', (e) => {
             const href = link.getAttribute('href');
@@ -84,5 +97,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 setTimeout(() => window.location.href = href, 800);
             }
         });
+    });
+
+    // 7. RESET OB RESIZE
+    window.addEventListener('resize', () => {
+        if (window.innerWidth <= 991) {
+            if (container) container.style.transform = "none";
+            body.style.overflow = "auto";
+        }
     });
 });
