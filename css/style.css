@@ -513,24 +513,31 @@ body.scrolled .dot-nav { opacity: 1; }
         color: black;
 }
 
-/************************************************************************************************************/
+/* ================================================== */
+/* KONČNI MOBILE FIX (pod 991px) */
+/* ================================================== */
 @media (max-width: 991px) {
-    /* 1. ODKLEPANJE SCROLLA */
+    /* 1. ODKLEPANJE SCROLLA - Forsiranje naravnega obnašanja */
     html, body {
         overflow-x: hidden !important;
-        overflow-y: visible !important; /* Dovolimo vsebini, da diktira dolžino */
+        overflow-y: auto !important; /* Ključno za scroll */
         height: auto !important;
         width: 100%;
         position: relative;
     }
 
-    /* 2. SKRIVANJE DESKTOP NAVAKE */
+    /* Onemogoči Bootstrapov vh-100 in overflow-hidden na mobilcu */
+    .vh-100.overflow-hidden {
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    /* 2. SKRIVANJE DESKTOP ELEMENTOV */
     #left-panel, .dot-nav, .bg-layers, .mouse {
         display: none !important;
     }
 
     /* 3. VSTOPNA STRAN (HERO) */
-    /* Ker je logo rdeč na kremi, tu NI več rdečega ozadja */
     body.intro-mode::before {
         content: "";
         display: block;
@@ -559,7 +566,7 @@ body.scrolled .dot-nav { opacity: 1; }
 
     .sections-container {
         display: block !important;
-        transform: none !important;
+        transform: none !important; /* Prepreči premikanje preko JS */
         height: auto !important;
     }
 
@@ -569,16 +576,19 @@ body.scrolled .dot-nav { opacity: 1; }
         padding: 80px 25px;
         position: relative;
         background-color: transparent !important;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
-    /* Slike ozadij v sekcijah */
+    /* Ozadja sekcij */
     .v-section::after {
         content: "";
         position: absolute;
         inset: 0;
         background-size: cover;
         background-position: center;
-        opacity: 0.3; /* Malo močneje, da se vidijo */
+        opacity: 0.3;
         z-index: -1;
     }
 
@@ -588,24 +598,24 @@ body.scrolled .dot-nav { opacity: 1; }
     .geschichte-section::after { background-image: url('../image/bevk.png'); }
 
     /* 5. BARVA HAMBURGER IKONE */
-    /* Osnovno stanje: Rdeča (ker je vstopna stran krem barve) */
+    /* Vedno rdeča v osnovi */
     #nav-icon span {
         background: var(--red) !important;
     }
 
-    /* Ko odpreš overlay ali ko podrsaš dol v sekcije s slikami, postane bela */
-    #nav-icon.open span,
-    body.scrolled #nav-icon span {
+    /* Bela SAMO ko je meni odprt */
+    #nav-icon.open span {
         background: var(--cream) !important;
     }
 
     /* 6. OVERLAY NAVIGACIJA */
     .overlay {
         background-color: var(--red);
+        z-index: 10000;
     }
 
     .overlay-content a {
-        font-size: 1.8rem !important;
+        font-size: 2rem !important;
         color: var(--cream) !important;
     }
 }
