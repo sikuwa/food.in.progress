@@ -520,16 +520,16 @@ body.scrolled .dot-nav { opacity: 1; }
 /* ================================================== */
 @media (max-width: 991px) {
     
-    /* 1. STABILIZACIJA: Prepreči horizontalni scroll in omogoči vertikalnega */
+    /* 1. STABILIZACIJA: Omogoči naraven scroll po celotni dolžini */
     html, body {
         overflow-x: hidden !important;
-        overflow-y: auto !important;
+        overflow-y: auto !important; /* Ključno za scroll */
         width: 100%;
         position: relative;
-        height: auto; /* Pomembno za normalen scroll */
+        height: auto !important; 
     }
 
-    /* 2. SKRIVANJE ELEMENTOV */
+    /* 2. SKRIVANJE DESKTOP ELEMENTOV */
     #left-panel, 
     .dot-nav, 
     .bg-layers, 
@@ -538,22 +538,22 @@ body.scrolled .dot-nav { opacity: 1; }
     }
 
     /* 3. VSTOPNA STRAN (HERO) */
-    /* Uporabimo body.intro-mode::before za fiksno rdeče ozadje z logotipom */
+    /* Postavimo jo kot fiksno višino na vrhu */
     body.intro-mode::before {
         content: "";
         display: block;
         width: 100%;
         height: 100vh;
-        background-color: var(--cream);
-        background-image: url('../image/logo.svg'); /* Preveri pot do logotipa */
+        background-color: var(--red);
+        background-image: url('../image/logo.svg');
         background-repeat: no-repeat;
         background-position: center;
-        background-size: 80% auto; /* Logo je cel viden z varnostnim robom */
+        background-size: 75% auto; /* Logo centriran in viden */
         position: relative;
         z-index: 10;
     }
 
-    /* Prilagoditev desnega panela, da se zloži pod hero stran */
+    /* Desni panel spremenimo v normalen block pod hero stranjo */
     #right-panel {
         position: relative !important;
         width: 100% !important;
@@ -568,26 +568,24 @@ body.scrolled .dot-nav { opacity: 1; }
     .sections-container {
         display: block !important;
         transform: none !important; /* Onemogoči JS premikanje */
-        width: 100%;
+        height: auto !important;
     }
 
     .v-section {
         height: auto !important;
         min-height: 100vh;
-        padding: 80px 25px;
+        padding: 100px 25px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         text-align: center;
         position: relative;
-        overflow: hidden;
-        background-color: var(--cream);
         z-index: 1;
+        background-color: transparent !important; /* Da se vidi ::after slika */
     }
 
     /* DODAJANJE SLIK OZADIJ V SEKCIJE */
-    /* Vsaki sekciji dodamo pseudo element za sliko, ki se prilagodi zaslonu */
     .v-section::after {
         content: "";
         position: absolute;
@@ -597,35 +595,34 @@ body.scrolled .dot-nav { opacity: 1; }
         height: 100%;
         background-size: cover;
         background-position: center;
-        opacity: 0.15; /* Prilagodi prosojnost, da je tekst berljiv */
+        opacity: 0.2; /* Prilagodi prosojnost po želji */
         z-index: -1;
     }
 
-    /* Specifične slike za tvoje sekcije (Popravi poti do slik!) */
+    /* Specifične slike za sekcije */
     .hausgemacht-section::after { background-image: url('../image/slika1.jpg'); }
-    .naturlich-section::after { background-image: url('../image/slika2.jpg'); }
+    .naturlich-section::after { background-image: url('../image/img2.jpg'); }
     .oma-section::after { background-image: url('../image/slika3.jpg'); }
-    .geschichte-section::after { background-image: url('../image/slika4.jpg'); }
+    .geschichte-section::after { background-image: url('../image/bevk.png'); }
 
     /* 5. OVERLAY NAVIGACIJA */
     .overlay {
-        width: 0; /* JS kontrolira širino ob kliku na hamburger */
         overflow-y: auto;
         background-color: var(--red);
     }
 
     .overlay-content {
-        padding: 60px 20px;
+        padding: 80px 20px;
         position: relative;
         top: 0;
-        transform: none; /* Resetiramo desktop centriranje */
+        transform: none;
         width: 100%;
+        height: auto;
     }
 
     .overlay-content a {
-        font-size: 2rem !important; /* Prilagojena velikost za mobilni zaslon */
-        margin: 15px 0;
-        text-align: center;
+        font-size: 1.8rem !important; 
+        margin: 10px 0;
     }
 
     /* 6. HAMBURGER IKONA */
@@ -635,29 +632,20 @@ body.scrolled .dot-nav { opacity: 1; }
     }
 
     #nav-icon span {
-        background: var(--red); /* Privzeto rdeča na kremi */
+        background: var(--red) !important; /* Rdeča na kremi */
     }
 
-    /* Ko je ikona na vrhu vstopne strani (rdeča podlaga), naj bo bela */
+    /* ikona  vstopne strani */
     body.intro-mode #nav-icon:not(.open) span {
-        background: var(--cream) !important;
+        background: var(--red) !important;
+    }
+    
+    #nav-icon.open span {
+        background: var(--cream) !important; /* Vedno bela ko je meni odprt */
     }
 
-    /* 7. BESEDILO */
+    /* 7. PRILAGODITEV BESEDILA */
     .inner-content h1 {
-        font-size: 2rem !important;
-        line-height: 1.1;
-    }
-
-    .inner-content p {
-        font-size: 1.1rem !important;
-        line-height: 1.4;
-    }
-
-    .btn-premium {
-        display: inline-block;
-        margin-top: 20px;
-        padding: 12px 30px;
-        font-size: 0.9rem;
+        font-size: 1.8rem !important;
     }
 }
