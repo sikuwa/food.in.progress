@@ -517,50 +517,52 @@ body.scrolled .dot-nav { opacity: 1; }
 /* ================================================== */
 /* KONČNI MOBILE FIX (pod 991px) */
 /* ================================================== */
+/* ================================================== */
+/* MOBILE OPTIMIZATION (Pod 991px) */
+/* ================================================== */
 @media (max-width: 991px) {
-    /* 1. OSNOVA */
     html, body {
         overflow: hidden !important;
         height: 100% !important;
         width: 100%;
         position: fixed;
         touch-action: none;
-        background-color: var(--cream);
+        background-color: #fdfaf5; /* var(--cream) */
     }
 
-    /* 2. VSTOPNA STRAN (INTRO) */
-    /* Ko nismo v 'scrolled' načinu, je logo viden, vsebina pa spodaj */
+    /* VSTOPNA STRAN (INTRO) */
     body::before {
         content: "";
         position: fixed;
         top: 0; left: 0;
         width: 100%; height: 100%;
-        background-color: var(--cream);
+        background-color: #fdfaf5;
         background-image: url('../image/logo.svg');
         background-repeat: no-repeat;
         background-position: center;
         background-size: 60% auto;
         z-index: 2000;
-        transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+        pointer-events: none; 
     }
 
-    /* Ko skrolamo, se logo odpelje gor */
     body.scrolled::before {
         transform: translateY(-100%);
     }
 
-    /* 3. STRUKTURA VSEBINE */
-    #left-panel, .dot-nav, .bg-layers, .mouse {
+    /* SKRIVANJE DESKTOP ELEMENTOV */
+    #left-panel, .dot-nav, .bg-layers, .fixed-bg-container, .mouse {
         display: none !important;
     }
 
+    /* STRUKTURA VSEBINE */
     #right-panel {
         width: 100% !important;
         height: 100vh !important;
         position: relative;
         z-index: 10;
-        transform: translateY(100%); /* Čaka pod logotipom */
-        transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        transform: translateY(100%);
+        transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
     }
 
     body.scrolled #right-panel {
@@ -571,57 +573,66 @@ body.scrolled .dot-nav { opacity: 1; }
         display: flex !important;
         flex-direction: column;
         height: 100vh;
+        width: 100%;
         will-change: transform;
+        backface-visibility: hidden;
     }
 
-    /* 4. SEKCIJE - ENAKOMERNI RAZMAKI */
     .v-section {
         height: 100vh !important;
         width: 100vw !important;
         flex-shrink: 0;
-        /* Padding je enak levo in desno (40px) */
-        padding: 60px 40px !important;
+        padding: 80px 40px !important;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        align-items: center;
+        text-align: center;
         position: relative;
-        background-color: var(--cream) !important;
-        box-sizing: border-box; /* Ključno za enak padding */
+        background-color: #fdfaf5 !important;
+        box-sizing: border-box;
     }
 
-    /* Slike v ozadju - prilagojene mobilcem */
+    /* Slike v ozadju za mobilne */
     .v-section::after {
         content: "";
         position: absolute;
-        inset: 0;
+        top: -1%; left: -1%;
+        width: 102%; height: 102%;
         background-size: cover;
         background-position: center;
-        opacity: 0.2;
+        opacity: 0.18;
         z-index: -1;
+        will-change: transform;
+        transform: translateZ(0);
     }
 
     .hausgemacht-section::after { background-image: url('../image/slika1.jpg'); }
     .naturlich-section::after { background-image: url('../image/img2.jpg'); }
-    .oma-section::after { background-image: url('../image/slika3.jpg'); }
+    .oma-section::after { background-image: url('../image/img3.jpg'); }
     .geschichte-section::after { background-image: url('../image/bevk_mbl.png'); }
 
-    /* 5. NAVIGACIJA */
-    #nav-icon {
-        z-index: 3000;
-        display: block !important;
-    }
-    
-    #nav-icon span { background: var(--red) !important; }
-    #nav-icon.open span { background: var(--cream) !important; }
+    /* NAVIGACIJA */
+    #nav-icon { z-index: 3000; display: block !important; }
+    #nav-icon span { background: #ce1212 !important; /* var(--red) */ }
+    #nav-icon.open span { background: #fdfaf5 !important; }
 
     .overlay {
-        background-color: var(--red);
+        background-color: #ce1212;
         z-index: 2500;
         position: fixed;
+        width: 0;
+        height: 100%;
+        top: 0; left: 0;
+        transition: 0.5s;
+        overflow: hidden;
     }
-    
+
     .overlay-content a {
-        font-size: 2rem !important;
-        color: var(--cream) !important;
+        font-size: 1.8rem !important;
+        color: #fdfaf5 !important;
+        display: block;
+        padding: 10px;
+        text-decoration: none;
     }
 }
