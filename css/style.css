@@ -516,137 +516,124 @@ body.scrolled .dot-nav { opacity: 1; }
 /************************************************************************************************************/
 
 /* ================================================== */
-/* MOBILE RESPONSIVE (pod 992px) */
+/* MOBILE CLEANUP (pod 991px) */
 /* ================================================== */
 @media (max-width: 991px) {
-    /* 1. Odstranimo split-screen postavitev */
-    .intro-mode .left-panel {
-        display: none; /* Skrijemo levi del na mobilcih */
-    }
-
-    .intro-mode .right-panel {
+    
+    /* 1. STABILIZACIJA OSNOVE */
+    html, body {
+        overflow-x: hidden; /* Popolna blokada horizontalnega premikanja */
         width: 100%;
-        left: 0;
+        position: relative;
+        height: auto;
     }
 
-    /* 2. Prilagodimo sekcije, da niso fiksne na 100vh, ampak se prilagodijo vsebini */
-    .sections-container {
-        transform: none !important; /* Onemogočimo JS premikanje vsebine navzgor/navzdol */
-        display: block;
+    /* Skrijemo vse desktop specifične elemente */
+    .intro-mode .left-panel, 
+    .dots-nav, 
+    .bg-layers {
+        display: none !important;
     }
 
-    .v-section {
-        height: auto; /* Sekcija se raztegne po vsebini */
-        min-height: 100vh;
-        padding: 80px 20px;
-        opacity: 1 !important; /* Vse sekcije so vidne */
-        visibility: visible !important;
-    }
-
-    /* 3. Vstopna (hero) sekcija z logotipom */
-    /* Ker smo skrili levo ploščo, moramo na vrhu ustvariti prostor za logotip */
+    /* 2. VSTOPNI HERO (Logo stran) */
     .intro-mode::before {
         content: "";
         display: block;
         height: 100vh;
-        background: var(--red);
-        background-image: url('../image/logo.svg'); /* Preveri pot do logotipa */
+        background-color: var(--red);
+        /* Prilagoditev logotipa: contain + 20% margin znotraj ozadja */
+        background-image: url('../image/logo.svg'); 
         background-repeat: no-repeat;
         background-position: center;
-        background-size: 60%;
-    }
-
-    /* 4. Skrijemo pike za navigacijo na mobilcih */
-    .dots-nav {
-        display: none;
-    }
-
-    /* 5. Ozadja (bg-layers) naj bodo fiksna ali pa jih na mobilcu poenostavimo */
-    .bg-layers {
-        display: none; /* Priporočam skritje kompleksnih plasti za boljšo hitrost */
-    }
-
-    .v-section h1 {
-        font-size: 2.5rem;
-    }
-}
-
-@media (max-width: 991px) {
-    /* 1. Skrijemo radio gumbe (pike) */
-    .dots-nav {
-        display: none !important;
-    }
-
-    /* 2. Prilagoditev glavne strukture */
-    .intro-mode .left-panel {
-        display: none;
+        background-size: 70% auto; /* Logotip zavzame 70% širine, kar ustvari varen rob */
     }
 
     .intro-mode .right-panel {
-        width: 100%;
-        left: 0;
-        position: relative;
+        width: 100% !important;
+        left: 0 !important;
+        position: relative !important;
+        height: auto !important;
+        display: block !important;
     }
 
+    /* 3. STRUKTURA SEKCIJ */
     .sections-container {
-        transform: none !important; /* Onemogočimo JS premikanje */
+        display: block !important;
+        transform: none !important; /* Onemogoči JS skakanje */
+        width: 100%;
+    }
+
+    .v-section {
+        height: auto !important;
+        min-height: 100vh; /* Vsaka sekcija vsaj čez cel zaslon */
+        padding: 100px 30px; /* Več prostora zgoraj/spodaj za scroll */
+        opacity: 1 !important;
+        visibility: visible !important;
         display: flex;
         flex-direction: column;
-    }
-
-    /* 3. PRIKAZ SLIK V SEKCIJAH */
-    .v-section {
-        height: auto;
-        min-height: 100vh;
-        padding: 100px 20px;
-        position: relative;
-        z-index: 1;
-        overflow: hidden;
-        display: flex;
-        align-items: center;
         justify-content: center;
+        box-sizing: border-box;
     }
 
-    /* Ustvarimo prostor za sliko v ozadju vsake sekcije */
-    .v-section::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
+    /* 4. OVERLAY NAVIGACIJA PRILAGODITEV */
+    .overlay {
+        /* Prepreči, da bi dolg meni postal nedostopen */
+        overflow-y: auto; 
+    }
+
+    .overlay-content {
         width: 100%;
-        height: 100%;
-        background-size: cover;
-        background-position: center;
-        z-index: -1; /* Slika gre pod tekst */
-        opacity: 0.3; /* Prilagodi prosojnost, da bo tekst berljiv */
+        padding: 40px 20px;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%); /* Centriranje menija */
     }
 
-    /* Ročno dodelimo slike posameznim sekcijam (poveži z imeni plasti v bg-layers) */
-    /* Predvidevam vrstni red slik, ki jih imaš v bg-layers */
-   /* .hausgemacht-section::before { 
-        background-image: url('../image/slide1.jpg');  Zamenjaj s svojo potjo */
-    }
-    .naturlich-section::before { 
-        background-image: url('../image/img2.jpg'); 
-    }
-  /*  .oma-section::before { 
-        background-image: url('../image/slide3.jpg'); 
-    }*/
-    .geschichte-section::before { 
-        background-image: url('../image/bevk.jpg'); 
+    .nav-links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
-    /* Onemogočimo originalne bg-layers na mobilcu, da ne porabljajo procesorja */
-    .bg-layers {
-        display: none;
-    }
-
-    /* 4. Prilagoditev besedila za mobilce */
-    .inner-content {
-        max-width: 100%;
+    .nav-links a {
+        font-size: 1.5rem !important; /* Optimalna velikost za mobitel */
+        margin: 12px 0;
         text-align: center;
-        background: rgba(255, 255, 255, 0.8); /* Svetlo ozadje za tekst za boljšo berljivost čez sliko */
-        padding: 30px 20px;
-        border-radius: 15px;
+        width: 100%;
+    }
+
+    /* 5. HAMBURGER IKONA (Nav-icon) */
+    #nav-icon {
+        top: 25px;
+        right: 25px;
+        z-index: 1001; /* Vedno nad vsem */
+    }
+
+    /* Če je ikona na rdeči podlagi, jo naredimo belo (opcijsko, odvisno od dizajna) */
+    #nav-icon span {
+        background: var(--cream) !important; 
+    }
+
+    /* 6. SOCIALNE IKONE */
+    .social-links {
+        margin-top: 40px;
+        justify-content: center;
+        gap: 30px;
+    }
+
+    .social-icon {
+        font-size: 1.8rem;
+    }
+
+    /* 7. PRILAGODITEV BESEDILA */
+    .inner-content h1 {
+        font-size: 1.8rem !important;
+        line-height: 1.2;
+        margin-bottom: 20px;
+    }
+
+    .inner-content p {
+        font-size: 1rem !important;
+        line-height: 1.5;
     }
 }
