@@ -6,13 +6,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const container = document.querySelector('.sections-container');
     const bgLayers = document.querySelectorAll('.bg-layer');
 
+    let current = 0;
+    let moving = false;
+
     // 1. MEHKI VHOD
     setTimeout(() => body.classList.add('page-loaded'), 100);
 
-    // 2. MEHKI ODHOD - Popravljen selektor, da ne blokira socialnih ikon
+    // 2. NAVIGACIJA IN PREHODI (Mehki odhod)
     document.querySelectorAll('.nav-links a, .btn-premium').forEach(link => {
         link.addEventListener('click', (e) => {
             const href = link.getAttribute('href');
+            // Preprečimo prehod, če gre za sidro ali prazen link
             if (href && href.includes('.html')) {
                 e.preventDefault();
                 body.classList.add('page-exit');
@@ -21,74 +25,90 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    let current = 0;
-    let moving = false;
-
+    // 3. POSODABLJANJE SEKCIJ (Logic za Desktop)
     function update(idx) {
+        if (window.innerWidth <= 991) return; // Onemogoči na mobilcih
         if (idx < 0 || idx >= dots.length || moving) return;
+        
         moving = true;
         current = idx;
 
         // Premik vsebine
         container.style.transform = `translateY(-${idx * 100}vh)`;
         
-        // Pike
+        // Posodobitev pik (navigacija)
         dots.forEach(d => d.classList.remove('active'));
-        dots[idx].classList.add('active');
+        if(dots[idx]) dots[idx].classList.add('active');
 
-        // Slike ozadja
+        // Slike ozadja (Fading effect)
         bgLayers.forEach(l => l.classList.remove('active'));
-        if (bgLayers[idx]) bgLayers[idx].classList.add('active');
+        if(bgLayers[idx]) bgLayers[idx].classList.add('active');
 
-        // Gumbi
+        // Gumbi v sekcijah
         document.querySelectorAll('.btn-premium').forEach(b => b.classList.remove('visible'));
+        const activeBtn = document.querySelectorAll('.v-section')[idx]?.querySelector('.btn-premium');
+        
         setTimeout(() => {
-            const btn = document.querySelectorAll('.v-section')[idx].querySelector('.btn-premium');
-            if (btn) btn.classList.add('visible');
+            if (activeBtn) activeBtn.classList.add('visible');
             moving = false;
-        }, 1100);
+        }, 800);
     }
 
-    // 3. SCROLL INTERAKCIJA
+    // 4. SCROLL INTERAKCIJA (Samo Desktop)
     window.addEventListener('wheel', (e) => {
+        if (window.innerWidth <= 991) return; // Naraven scroll na mobilcih
         if (moving) return;
 
+        // Če še nismo "vstopili" v vsebino (Intro mode)
         if (!body.classList.contains('scrolled')) {
             if (e.deltaY > 0) {
                 body.classList.add('scrolled');
-                // Takoj pokaži prvo sliko in gumb ob prvem scrollu
                 update(0); 
             }
         } else {
-            if (e.deltaY > 0) update(current + 1);
-            else if (e.deltaY < 0 && current === 0) {
-                body.classList.remove('scrolled');
+            // Premikanje med sekcijami
+            if (e.deltaY > 0) {
+                update(current + 1);
             } else if (e.deltaY < 0) {
-                update(current - 1);
+                if (current === 0) {
+                    body.classList.remove('scrolled');
+                } else {
+                    update(current - 1);
+                }
             }
         }
     }, { passive: true });
 
-    // 4. OVERLAY PREKLOP
-    navIcon.addEventListener('click', () => {
-        navIcon.classList.toggle('open');
-        if (navIcon.classList.contains('open')) {
-            overlay.style.width = "100%";
-        } else {
-            overlay.style.width = "0";
-        }
-    });
-
-    // Pike na klik
+    // 5. NAVIGACIJSKE PIKE (Klik)
     dots.forEach(dot => {
         dot.addEventListener('click', () => {
+            if (window.innerWidth <= 991) return;
             const target = parseInt(dot.dataset.index);
+            
             if (!body.classList.contains('scrolled')) {
                 body.classList.add('scrolled');
-                setTimeout(() => update(target), 800);
+            }
+            update(target);
+        });
+    });
+
+    // 6. OVERLAY MENU (Hamburger)
+    if (navIcon && overlay) {
+        navIcon.addEventListener('click', () => {
+            navIcon.classList.toggle('open');
+            if (navIcon.classList.contains('open')) {
+                overlay.style.width = "100%";
             } else {
-                update(target);
+                overlay.style.width = "0";
             }
         });
+    }
+
+    // 7. RESPONSIVE RESET
+    window.addEventListener('resize', () => {
+        if (window.innerWidth <= 991) {
+            container.style.transform = "none";
+            body.classList.remove('scrolled');
+        }
     });
 });
