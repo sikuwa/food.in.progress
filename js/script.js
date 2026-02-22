@@ -9,42 +9,32 @@ document.addEventListener("DOMContentLoaded", () => {
     let current = 0;
     let moving = false;
 
-    // 1. MEHKI VHOD
+    // 1. MEHKI VHOD (Fade-in ob nalaganju)
     setTimeout(() => body.classList.add('page-loaded'), 100);
 
-    // 2. NAVIGACIJA IN PREHODI (Mehki odhod)
-    document.querySelectorAll('.nav-links a, .btn-premium').forEach(link => {
-        link.addEventListener('click', (e) => {
-            const href = link.getAttribute('href');
-            // Preprečimo prehod, če gre za sidro ali prazen link
-            if (href && href.includes('.html')) {
-                e.preventDefault();
-                body.classList.add('page-exit');
-                setTimeout(() => window.location.href = href, 800);
-            }
-        });
-    });
-
-    // 3. POSODABLJANJE SEKCIJ (Logic za Desktop)
+    // 2. POMOŽNA FUNKCIJA ZA POSODABLJANJE SEKCIJ (Samo Desktop)
     function update(idx) {
-        if (window.innerWidth <= 991) return; // Onemogoči na mobilcih
-        if (idx < 0 || idx >= dots.length || moving) return;
+        // Prekinemo, če smo na mobilcu, če se že premikamo ali če indeks ne obstaja
+        if (window.innerWidth <= 991 || moving) return;
+        if (idx < 0 || idx >= dots.length) return;
         
         moving = true;
         current = idx;
 
-        // Premik vsebine
-        container.style.transform = `translateY(-${idx * 100}vh)`;
+        // Premik vsebine navpično (vh enote)
+        if (container) {
+            container.style.transform = `translateY(-${idx * 100}vh)`;
+        }
         
-        // Posodobitev pik (navigacija)
+        // Posodobitev aktivne pike
         dots.forEach(d => d.classList.remove('active'));
-        if(dots[idx]) dots[idx].classList.add('active');
+        if (dots[idx]) dots[idx].classList.add('active');
 
-        // Slike ozadja (Fading effect)
+        // Preklop slik v ozadju
         bgLayers.forEach(l => l.classList.remove('active'));
-        if(bgLayers[idx]) bgLayers[idx].classList.add('active');
+        if (bgLayers[idx]) bgLayers[idx].classList.add('active');
 
-        // Gumbi v sekcijah
+        // Animacija gumbov znotraj sekcij
         document.querySelectorAll('.btn-premium').forEach(b => b.classList.remove('visible'));
         const activeBtn = document.querySelectorAll('.v-section')[idx]?.querySelector('.btn-premium');
         
@@ -54,21 +44,22 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 800);
     }
 
-    // 4. SCROLL INTERAKCIJA (Samo Desktop)
+    // 3. SCROLL INTERAKCIJA (Wheel event)
     window.addEventListener('wheel', (e) => {
-        if (window.innerWidth <= 991) return; // Naraven scroll na mobilcih
+        // Na mobilnih napravah dovolimo naraven scroll, JS ne posega vmes
+        if (window.innerWidth <= 991) return; 
         if (moving) return;
 
-        // Če še nismo "vstopili" v vsebino (Intro mode)
+        // Preverjanje vstopnega stanja (Intro mode)
         if (!body.classList.contains('scrolled')) {
             if (e.deltaY > 0) {
                 body.classList.add('scrolled');
                 update(0); 
             }
         } else {
-            // Premikanje med sekcijami
+            // Logika za premikanje med sekcijami na desktopu
             if (e.deltaY > 0) {
-                update(current + 1);
+                if (current < dots.length - 1) update(current + 1);
             } else if (e.deltaY < 0) {
                 if (current === 0) {
                     body.classList.remove('scrolled');
@@ -79,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }, { passive: true });
 
-    // 5. NAVIGACIJSKE PIKE (Klik)
+    // 4. NAVIGACIJSKE PIKE (Klik na desktopu)
     dots.forEach(dot => {
         dot.addEventListener('click', () => {
             if (window.innerWidth <= 991) return;
@@ -92,23 +83,35 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // 6. OVERLAY MENU (Hamburger)
+    // 5. HAMBURGER & OVERLAY MENI
     if (navIcon && overlay) {
         navIcon.addEventListener('click', () => {
             navIcon.classList.toggle('open');
-            if (navIcon.classList.contains('open')) {
-                overlay.style.width = "100%";
-            } else {
-                overlay.style.width = "0";
-            }
+            // Če je odprt, raztegni čez cel zaslon, sicer zapri na 0
+            overlay.style.width = navIcon.classList.contains('open') ? "100%" : "0";
         });
     }
 
-    // 7. RESPONSIVE RESET
+    // 6. MEHKI ODHOD (Prehodi na nove strani)
+    document.querySelectorAll('.nav-links a, .btn-premium').forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            // Preprečimo takojšen skok, če gre za lokalno .html datoteko
+            if (href && href.includes('.html')) {
+                e.preventDefault();
+                body.classList.add('page-exit');
+                setTimeout(() => window.location.href = href, 800);
+            }
+        });
+    });
+
+    // 7. RESPONSIVE RESET (Če uporabnik spreminja velikost okna ali obrača telefon)
     window.addEventListener('resize', () => {
         if (window.innerWidth <= 991) {
-            container.style.transform = "none";
+            // Pobrišemo transformacije, da omogočimo naraven scroll
+            if (container) container.style.transform = "none";
             body.classList.remove('scrolled');
+            current = 0;
         }
     });
 });
