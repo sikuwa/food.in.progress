@@ -573,9 +573,9 @@ body.scrolled .dot-nav { opacity: 1; }
     .v-section {
         height: auto !important;
         min-height: 100vh;
-        padding: 80px 25px;
+        padding: 80px 35px;
         position: relative;
-        background-color: transparent !important;
+        background-color: var(--cream); !important;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -588,14 +588,14 @@ body.scrolled .dot-nav { opacity: 1; }
         inset: 0;
         background-size: cover;
         background-position: center;
-        opacity: 0.3;
+        opacity: 0.2;
         z-index: -1;
     }
 
     .hausgemacht-section::after { background-image: url('../image/slika1.jpg'); }
     .naturlich-section::after { background-image: url('../image/img2.jpg'); }
     .oma-section::after { background-image: url('../image/slika3.jpg'); }
-    .geschichte-section::after { background-image: url('../image/bevk.png'); }
+    .geschichte-section::after { background-image: url('../image/bevk_mbl.png'); }
 
     /* 5. BARVA HAMBURGER IKONE */
     /* Vedno rdeča v osnovi */
