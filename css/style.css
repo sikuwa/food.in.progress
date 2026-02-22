@@ -518,104 +518,86 @@ body.scrolled .dot-nav { opacity: 1; }
 /* KONČNI MOBILE FIX (pod 991px) */
 /* ================================================== */
 @media (max-width: 991px) {
-    
-    /* 1. PRILAGODBA SCROLLA - JS zdaj upravlja premikanje (Snap) */
+    /* 1. OSNOVA */
     html, body {
-        /* Onemogočimo naravni scroll, da se ne tepe z JS Snap logiko */
-        overflow: hidden !important; 
+        overflow: hidden !important;
         height: 100% !important;
         width: 100%;
-        position: fixed; /* Prepreči "gumijast" odboj brskalnika */
-
-        /* Ključno: povemo brskalniku, da JS prevzema kretnje */
-        touch-action: none !important; 
-        -webkit-overflow-scrolling: none;
+        position: fixed;
+        touch-action: none;
+        background-color: var(--cream);
     }
 
-    /* Onemogoči Bootstrapov vh-100 in prisili fiksno višino za Snap */
-    .vh-100.overflow-hidden {
-        height: 100vh !important;
-        overflow: hidden !important;
-    }
-
-    /* 2. SKRIVANJE DESKTOP ELEMENTOV */
-    #left-panel, .dot-nav, .bg-layers, .mouse {
-        display: none !important;
-    }
-
-    /* 3. VSTOPNA STRAN (HERO) */
-    body.intro-mode::before {
+    /* 2. VSTOPNA STRAN (INTRO) */
+    /* Ko nismo v 'scrolled' načinu, je logo viden, vsebina pa spodaj */
+    body::before {
         content: "";
-        display: block;
-        width: 100%;
-        height: 100vh;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
         background-color: var(--cream);
         background-image: url('../image/logo.svg');
         background-repeat: no-repeat;
         background-position: center;
-        background-size: 70% auto;
-        position: absolute; /* Spremenjeno v absolute za Snap strukturo */
-        top: 0;
-        left: 0;
-        z-index: 5;
-        pointer-events: none;
+        background-size: 60% auto;
+        z-index: 2000;
+        transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
     }
 
-    /* 4. STRUKTURA ZA SNAP SCROLL */
+    /* Ko skrolamo, se logo odpelje gor */
+    body.scrolled::before {
+        transform: translateY(-100%);
+    }
+
+    /* 3. STRUKTURA VSEBINE */
+    #left-panel, .dot-nav, .bg-layers, .mouse {
+        display: none !important;
+    }
+
     #right-panel {
-        position: relative !important;
         width: 100% !important;
-        top: 0 !important;
-        right: 0 !important;
-        display: block !important;
-        height: 100vh !important; /* Za Snap mora biti fiksno */
+        height: 100vh !important;
+        position: relative;
         z-index: 10;
-        background-color: var(--cream);
-        overflow: hidden;
+        transform: translateY(100%); /* Čaka pod logotipom */
+        transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    body.scrolled #right-panel {
+        transform: translateY(0);
     }
 
     .sections-container {
-        display: flex !important; /* Flexbox za vertikalno nizanje sekcij */
+        display: flex !important;
         flex-direction: column;
         height: 100vh;
-        will-change: transform; /* Optimizacija za GPU */
-        /* JS bo kontroliral transform: translate3d */
+        will-change: transform;
     }
 
+    /* 4. SEKCIJE - ENAKOMERNI RAZMAKI */
     .v-section {
-        /* Za Snap efekt morajo biti sekcije točno 100vh */
         height: 100vh !important;
-        min-height: 100vh !important;
-        flex-shrink: 0; /* Prepreči krčenje vsebine */
-        
-        padding: 80px 40px !important;
-        position: relative;
-        background-color: var(--cream) !important;
+        width: 100vw !important;
+        flex-shrink: 0;
+        /* Padding je enak levo in desno (40px) */
+        padding: 60px 40px !important;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        z-index: 10;
-        overflow: hidden;
+        position: relative;
+        background-color: var(--cream) !important;
+        box-sizing: border-box; /* Ključno za enak padding */
     }
 
-    /* Ozadja sekcij - Optimizirano za premikanje */
+    /* Slike v ozadju - prilagojene mobilcem */
     .v-section::after {
         content: "";
         position: absolute;
-        /* Povečamo za 2% in centriramo, da preprečimo bele črte med snapom */
-        top: -1%;
-        left: -1%;
-        width: 102%;
-        height: 102%;
-        
+        inset: 0;
         background-size: cover;
         background-position: center;
-        opacity: 0.25; /* Rahlo povečana vidnost na krem ozadju */
+        opacity: 0.2;
         z-index: -1;
-        
-        /* Strojni pospešek za gladkost slik */
-        will-change: transform;
-        transform: translateZ(0);
     }
 
     .hausgemacht-section::after { background-image: url('../image/slika1.jpg'); }
@@ -623,23 +605,21 @@ body.scrolled .dot-nav { opacity: 1; }
     .oma-section::after { background-image: url('../image/slika3.jpg'); }
     .geschichte-section::after { background-image: url('../image/bevk_mbl.png'); }
 
-    /* 5. BARVA HAMBURGER IKONE */
-    #nav-icon span {
-        background: var(--red) !important;
+    /* 5. NAVIGACIJA */
+    #nav-icon {
+        z-index: 3000;
+        display: block !important;
     }
+    
+    #nav-icon span { background: var(--red) !important; }
+    #nav-icon.open span { background: var(--cream) !important; }
 
-    #nav-icon.open span {
-        background: var(--cream) !important;
-    }
-
-    /* 6. OVERLAY NAVIGACIJA */
     .overlay {
         background-color: var(--red);
-        z-index: 10000;
-        position: fixed; /* Nujno fiksno na vrhu snap kontejnerja */
-        height: 100%;
+        z-index: 2500;
+        position: fixed;
     }
-
+    
     .overlay-content a {
         font-size: 2rem !important;
         color: var(--cream) !important;
