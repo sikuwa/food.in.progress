@@ -3,9 +3,87 @@
     background: var(--red) !important;
 }*/
 
+/* ================================================== */
+/* 1. FONTI (Kopirano iz style.css) */
+/* ================================================== */
+
+@font-face {
+    font-family: 'LetterGothic';
+    src: url('../fonts/Letter Gothic MT Std.woff2') format('woff2');
+    font-weight: normal; font-style: normal;
+}
+@font-face {
+    font-family: 'LetterGothic';
+    src: url('../fonts/Letter Gothic MT Std Oblique.woff2') format('woff2');
+    font-weight: normal; font-style: italic;
+}
+@font-face {
+    font-family: 'LetterGothic';
+    src: url('../fonts/Letter Gothic MT Std Bold.woff2') format('woff2');
+    font-weight: bold; font-style: normal;
+}
+@font-face {
+    font-family: 'TTHoves';
+    src: url('../fonts/TTHoves-Regular.woff2') format('woff2');
+    font-weight: normal; font-style: normal;
+}
+@font-face {
+    font-family: 'TTHoves';
+    src: url('../fonts/TTHoves-Medium.woff2') format('woff2');
+    font-weight: 500; font-style: normal;
+}
+
+/* ================================================== */
+/* 2. SPREMENLJIVKE IN OSNOVA */
+/* ================================================== */
+:root {
+    --cream: #FDFAF6;
+    --red: #BC3219;
+    --svsiva: #e5e5e5;
+}
+
+/* RESETIRANJE BLOKAD: Pomembno, da stran dejansko dela */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: auto !important; /* Dovoli naravno višino */
+    overflow-y: auto !important; /* Dovoli scrollanje */
+    overflow-x: hidden;
+    background-color: var(--cream);
+    font-family: 'LetterGothic', sans-serif;
+    position: relative !important; /* Prepreči fixed pozicijo iz style.css */
+    touch-action: auto !important; /* Omogoči dotik */
+}
+
+/* Onemogoči uvodni logo na tej strani */
+body::before {
+    display: none !important;
+}
+
+body {
+    font-family: 'LetterGothic', sans-serif;
+}
+
+h1, h2, .overlay-content a {
+    font-family: 'TTHoves', sans-serif;
+    font-weight: bold;
+}
+
+/* Prisili right-panel, da zavzame celo širino in je viden */
+#right-panel {
+    width: 100% !important;
+    position: relative !important;
+    right: 0 !important;
+    transform: none !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 1;
+}
+
 /* --- LAYOUT --- */
 .lieferung-page {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -261,8 +339,9 @@
 /* DESNI TEKST (p) */
 .card-text p {
     font-family: 'LetterGothic', sans-serif;
-    font-weight: bold;
-    font-style: normal;
+    
+    
+
     font-size: 11px;
     margin: 0;
     /* Nastavi enak line-height kot pri h4 za popolno linijo */
@@ -277,6 +356,10 @@
     line-height: 1.4;
     color: #333;
 }*/
+
+.card-text span{
+    color: var(--red);
+}
 
 /* --- NAVODILA --- */
 .instructions-area {
