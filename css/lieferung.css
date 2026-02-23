@@ -51,9 +51,12 @@ html, body {
     overflow-y: auto !important; /* Dovoli scrollanje */
     overflow-x: hidden;
     background-color: var(--cream);
-    font-family: 'LetterGothic', sans-serif;
     position: relative !important; /* Prepreči fixed pozicijo iz style.css */
     touch-action: auto !important; /* Omogoči dotik */
+}
+
+body {
+    font-family: 'LetterGothic', sans-serif;
 }
 
 /* Onemogoči uvodni logo na tej strani */
