@@ -61,11 +61,6 @@ body::before {
     display: none !important;
 }
 
-body p{
-    font-family: 'LetterGothic';
-    font-style: normal;
-    font-weight: normal;
-}
 
 h1, h2, .overlay-content a {
     font-family: 'TTHoves', sans-serif;
