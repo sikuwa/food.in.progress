@@ -61,7 +61,7 @@ body::before {
     display: none !important;
 }
 
-body {
+body p{
     font-family: 'LetterGothic';
     font-style: normal;
     font-weight: normal;
