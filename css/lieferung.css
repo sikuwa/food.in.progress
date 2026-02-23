@@ -284,10 +284,7 @@ h1, h2, .overlay-content a {
 
 .intro-bar p {
     
-   font-family: 'LetterGothic', sans-serif;
-    font-style: normal;
-    font-weight: bold;
-
+      
     font-size: 18px;
     margin-bottom: 10px;
 }
@@ -483,10 +480,7 @@ h1, h2, .overlay-content a {
 
 /* DESNI TEKST (p) */
 .card-text p {
-    font-family: 'LetterGothic', sans-serif;
-    
-    
-
+         
     font-size: 11px;
     margin: 0;
     /* Nastavi enak line-height kot pri h4 za popolno linijo */
@@ -531,9 +525,7 @@ h1, h2, .overlay-content a {
 .step {
     text-align: left;
     padding: 20px;
-    font-family: 'LetterGothic', sans-serif;
-    font-style: normal;
-    font-weight: normal;
+   
 }
 
 .step span {
