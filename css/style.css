@@ -614,12 +614,12 @@ body.scrolled .dot-nav { opacity: 1; }
 
 /* SEKCIJE S SLIKAMI - Uporabimo gradient za 'opacity' efekt */
 .naturlich-section { 
-    background: linear-gradient(rgba(253, 250, 245, 0.7), rgba(253, 250, 245, 0.7)), 
+    background: linear-gradient(rgba(253, 250, 245, 0.4), rgba(253, 250, 245, 0.7)), 
                 url('../image/img2.jpg') no-repeat center/cover !important;
 }
 
 .geschichte-section { 
-    background: linear-gradient(rgba(253, 250, 245, 0.7), rgba(253, 250, 245, 0.7)), 
+    background: linear-gradient(rgba(253, 250, 245, 0.4), rgba(253, 250, 245, 0.7)), 
                 url('../image/bevk_mbl.png') no-repeat center/cover !important;
 }
 
