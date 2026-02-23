@@ -627,7 +627,7 @@ body.scrolled .dot-nav { opacity: 1; }
 
     /* SEKCIJE S SLIKAMI: Prisilna vidnost */
     .naturlich-section::after { 
-        background-image: url('image/img2.jpg') !important; 
+        background-image: url('../image/img2.jpg') !important; 
         background-size: cover !important;
         background-position: center !important;
         opacity: 0.3 !important;
@@ -635,7 +635,7 @@ body.scrolled .dot-nav { opacity: 1; }
     }
 
     .geschichte-section::after { 
-        background-image: url('image/bevk_mbl.png') !important; 
+        background-image: url('../image/bevk_mbl.png') !important; 
         background-size: cover !important;
         background-position: center !important;
         opacity: 0.3 !important;
