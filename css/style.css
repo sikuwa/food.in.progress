@@ -574,61 +574,85 @@ body.scrolled .dot-nav { opacity: 1; }
         will-change: transform;
         backface-visibility: hidden;
     }
+
+     .v-section p {
+        font-size: 1rem !important;
+        line-height: 1.5 !important;
+        text-align: left;
+    }
+    
+.v-section h1 {
+    font-size: 1.7rem !important; /* Pomanjšano, da paše na ekran */
+    word-wrap: break-word !important; /* Prelomi predolge besede */
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
 .v-section {
-        height: 100vh !important;
-        width: 100vw !important; /* Prisili točno širino zaslona */
-        flex-shrink: 0;
-        
-        /* POPRAVEK PADDINGA: padding ne sme povečati širine */
-        box-sizing: border-box !important; 
-        padding: 60px 30px !important; /* Enakomerno levo/desno */
-        
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        
-        position: relative;
-        background-color: var(--cream) !important;
-        overflow: hidden; /* Prepreči, da bi vsebina ali slike segale ven */
+    box-sizing: border-box !important;
+    padding: 60px 30px !important; /* Enak padding na obeh straneh */
+    width: 100vw !important; /* Prisili širino na točno širino zaslona */
+}
+
+    /* 2. POPRAVEK ZA PADDING (Vsebina ostane znotraj) */
+    .v-section {
+        padding: 60px 25px !important; /* Rahlo ožji padding za več prostora */
+        box-sizing: border-box !important;
+        width: 100vw !important;
+        overflow: hidden !important;
     }
 
-    /* Slike v ozadju za mobilne */
+/* Osnovna nastavitev za vsa ozadja sekcij */
 .v-section::after {
-        content: "";
-        position: absolute;
-        /* Razširimo malo čez rob, da ni belih črt pri snapu */
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        
-        /* Slika se prilagodi zaslonu, ne da bi se popačila */
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        
-        /* Opacity nastavimo tako, da je slika vidna, a ne moti teksta */
-        opacity: 0.25 !important; 
-        z-index: -1; /* Slika gre pod tekst */
-        
-        /* Strojni pospešek za gladkost */
-        will-change: transform;
-        transform: translateZ(0);
+    content: "" !important;
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: -1 !important;
+}
+    .inner-content {
+        width: 100% !important;
+        max-width: 100% !important;
+        z-index: 2; /* Vsebina nad sliko */
     }
 
-    .hausgemacht-section::after { background-image: url('../image/slika1.jpg'); }
-    .naturlich-section::after { background-image: url('../image/img2.jpg') !important; }
-    .oma-section::after { background-image: url('../image/img3.jpg'); }
-    .geschichte-section::after { background-image: url('../image/bevk_mbl.png')!important; }
+/* SEKCIJE BREZ SLIK (Hausgemacht & Oma): Zrnata krem barva */
+.hausgemacht-section::after,
+.oma-section::after {
+    background-color: var(--cream) !important;
+    /* Uporabimo tvoj grain efekt - če nimaš slike, dodamo teksturo papirja */
+    background-image: url("https://www.transparenttextures.com/patterns/natural-paper.png") !important;
+    opacity: 0.5 !important;
+}
 
-    /* Notranja vsebina - dodatna varnost za padding */
+    /* SEKCIJE S SLIKAMI: Prisilna vidnost */
+    .naturlich-section::after { 
+        background-image: url('image/img2.jpg') !important; 
+        background-size: cover !important;
+        background-position: center !important;
+        opacity: 0.3 !important;
+        display: block !important;
+    }
+
+    .geschichte-section::after { 
+        background-image: url('image/bevk_mbl.png') !important; 
+        background-size: cover !important;
+        background-position: center !important;
+        opacity: 0.3 !important;
+        display: block !important;
+    }
+
+    /* Dodaten fix: če imaš v HTML razred transparent-bg, ga tukaj povoziš */
+    .v-section.transparent-bg {
+        background-color: var(--cream) !important;
+    }
+}
+    /* Notranja vsebina - dodatna varnost za padding 
     .inner-content {
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 auto !important;
-    }
+    }*/
 }
 
     /* NAVIGACIJA */
