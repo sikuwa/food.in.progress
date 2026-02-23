@@ -261,9 +261,8 @@
 /* DESNI TEKST (p) */
 .card-text p {
     font-family: 'LetterGothic', sans-serif;
-    
-    
-
+    font-weight: bold;
+    font-style: normal;
     font-size: 11px;
     margin: 0;
     /* Nastavi enak line-height kot pri h4 za popolno linijo */
